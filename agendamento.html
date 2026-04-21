@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agendamentos</title>
+
+  <!-- MESMO CSS DO SITE -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- CSS específico do sistema -->
+  <link rel="stylesheet" href="css/agendamento.css">
+  <script src="js/agendamento.js" defer></script>
+</head>
+<body>
+
+<!-- HEADER (igual ao index, mas com links corrigidos) -->
+<header class="header">
+  <div class="container header__content">
+
+    <a href="index.html" class="logo">
+      <span class="logo__mark">PH</span>
+      <span class="logo__text">Barbearia do PH</span>
+    </a>
+
+    <nav class="nav">
+      <a href="index.html">Início</a>
+      <a href="index.html#servicos">Serviços</a>
+      <a href="index.html#equipe">Equipe</a>
+      <a href="index.html#contato">Contato</a>
+    </nav>
+
+    <div class="header__actions">
+      <a href="index.html" class="btn btn--secondary">Voltar</a>
+    </div>
+
+  </div>
+</header>
+
+<!-- CONTEÚDO -->
+<main class="section">
+  <div class="container booking-container">
+
+    <h1>Agendar Horário</h1>
+    <p>Escolha seu serviço, profissional e horário</p>
+
+    <!-- Progress -->
+    <div class="steps">
+      <div class="step active">Serviço</div>
+      <div class="step">Profissional</div>
+      <div class="step">Data</div>
+      <div class="step">Horário</div>
+      <div class="step">Dados</div>
+    </div>
+
+    <!-- Conteúdo dinâmico -->
+    <div id="content"></div>
+
+  </div>
+</main>
