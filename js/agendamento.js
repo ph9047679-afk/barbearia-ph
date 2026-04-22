@@ -235,15 +235,72 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function confirmBooking() {
-    alert("Agendamento realizado!");
+    // Validação básica
+    if (!state.service || !state.barber || !state.date || !state.time || !state.name || !state.phone) {
+      alert("Preencha todos os campos antes de confirmar.");
+      return;
+    }
 
+    // Lê os agendamentos já salvos no navegador
+    const storedBookings = readBookingsFromStorage();
+
+    // Impede duplicidade no mesmo dia e horário
+    const alreadyBooked = storedBookings.some(
+      (booking) => booking.date === state.date && booking.time === state.time
+    );
+
+    if (alreadyBooked) {
+      alert("Esse horário já está ocupado.");
+      return;
+    }
+
+    // Salva o agendamento no localStorage
+    const booking = {
+      service: state.service,
+      barber: state.barber,
+      date: state.date,
+      time: state.time,
+      name: state.name.trim(),
+      phone: state.phone.trim(),
+      createdAt: new Date().toISOString(),
+    };
+
+    saveBookingToStorage(booking);
+
+    // Formata a data para pt-BR
+    const formattedDate = new Date(`${state.date}T00:00:00`).toLocaleDateString("pt-BR");
+
+    // Monta a mensagem para o WhatsApp
+    const message =
+      `Olá! Novo agendamento recebido.\n\n` +
+      `Serviço: ${state.service}\n` +
+      `Profissional: ${state.barber}\n` +
+      `Data: ${formattedDate}\n` +
+      `Horário: ${state.time}\n` +
+      `Cliente: ${state.name}\n` +
+      `Telefone: ${state.phone}`;
+
+    const whatsappUrl = `https://wa.me/5511987121153?text=${encodeURIComponent(message)}`;
+
+    // Abre o WhatsApp
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+
+    // Atualiza a agenda local para evitar repetição imediata
     if (!bookedSlots[state.date]) {
       bookedSlots[state.date] = [];
     }
-
     bookedSlots[state.date].push(state.time);
 
-    location.reload();
+    // Reset opcional da tela
+    state.step = 1;
+    state.service = null;
+    state.barber = null;
+    state.date = null;
+    state.time = null;
+    state.name = "";
+    state.phone = "";
+
+    render();
   }
 
   const STORAGE_KEY = "ph_barbearia_agendamentos";
